@@ -21,7 +21,7 @@ st.info(
     """
 )
 
-df = pd.read_csv("parte_1.csv", parse_dates=["date"])
+df = pd.read_csv("ventas_1.csv", parse_dates=["date"])
 
 st.title("📊 Visión Global de las Ventas")
 
