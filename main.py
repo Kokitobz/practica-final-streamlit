@@ -2,26 +2,23 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 
-st.info(
-    """
-    ⚠️ **Disclaimer sobre los datos mostrados**
+import pandas as pd
+import streamlit as st
+import gdown
+import os
 
-    Los datos visualizados en esta pestaña corresponden únicamente a una **muestra de 100 filas**
-    del conjunto de datos original, recortado por motivos de rendimiento y despliegue.
+FILE_ID = "1I--5yCp9dw0iYpZuGMyMNM6pYnpQac-5"
+URL = f"https://drive.google.com/uc?id={FILE_ID}"
+OUTPUT = "parte_1.csv"
 
-    Por tanto:
-    - Los **rankings (Top productos / tiendas)** no reflejan el orden real completo.
-    - Las **escalas de color y magnitudes** no representan los valores reales globales.
-    - Las **tendencias temporales** pueden estar sesgadas o incompletas.
+@st.cache_data
+def load_data():
+    if not os.path.exists(OUTPUT):
+        gdown.download(URL, OUTPUT, quiet=False)
+    df = pd.read_csv(OUTPUT, parse_dates=["date"])
+    return df
 
-    En el dataset completo, los valores correctos deberían mostrar:
-    - Un mayor volumen agregado de ventas.
-    - Cambios significativos en la estacionalidad anual.
-    - Rankings distintos en función del total real de ventas.
-    """
-)
-
-df = pd.read_csv("ventas_1.csv", parse_dates=["date"])
+df = load_data()
 
 st.title("📊 Visión Global de las Ventas")
 
