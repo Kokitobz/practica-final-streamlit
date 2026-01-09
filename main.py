@@ -2,7 +2,9 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("ventas.csv", parse_dates=["date"])
+url = "https://drive.google.com/file/d/1I--5yCp9dw0iYpZuGMyMNM6pYnpQac-5/view?usp=drive_link"
+
+df = pd.read_csv(url, parse_dates=["date"])
 
 st.title("📊 Visión Global de las Ventas")
 
