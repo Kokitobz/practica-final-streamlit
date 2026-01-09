@@ -22,9 +22,10 @@ df = load_data()
 
 st.title("📊 Visión Global de las Ventas")
 
-tab1, tab2 = st.tabs([
+tab1, tab2, tab3 = st.tabs([
     "📊 Resumen Global",
-    "🏬 Análisis por tienda"
+    "🏬 Análisis por tienda",
+    "🗺️ Análisis por estado"
 ])
 
 
@@ -131,3 +132,51 @@ with tab2:
         f"{int(productos_promo):,}".replace(",", ".")
     )
 
+with tab3:
+
+    st.title("🗺️ Análisis por estado")
+
+    state_selected = st.selectbox(
+        "Selecciona un estado",
+        sorted(df["state"].dropna().unique())
+    )
+
+    df_state = df[df["state"] == state_selected]
+
+    transacciones_anuales = (
+        df_state
+        .groupby("year")["transactions"]
+        .sum()
+        .sort_index()
+    )
+
+    st.subheader("📈 Transacciones totales por año")
+    st.line_chart(transacciones_anuales)
+
+    ranking_tiendas = (
+        df_state
+        .groupby("store_nbr")["sales"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(10)
+    )
+
+    st.subheader("🏆 Top 10 tiendas con más ventas en el estado")
+    st.bar_chart(ranking_tiendas)
+
+    producto_top = (
+        df_state
+        .groupby("family")["sales"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(1)
+    )
+
+    producto_nombre = producto_top.index[0]
+    producto_ventas = producto_top.iloc[0]
+
+    st.metric(
+        "📦 Producto más vendido en el estado",
+        producto_nombre,
+        f"{int(producto_ventas):,}".replace(",", ".")
+    )
