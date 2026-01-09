@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 
-url = "https://drive.google.com/file/d/1I--5yCp9dw0iYpZuGMyMNM6pYnpQac-5/view?usp=drive_link"
+url = "https://drive.google.com/file/d/1I--5yCp9dw0iYpZuGMyMNM6pYnpQac-5/view?usp=sharing"
 
 df = pd.read_csv(url, parse_dates=["date"])
 
