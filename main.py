@@ -228,16 +228,6 @@ with tab4:
     st.subheader("🗺️ Estados con mayor volumen de ventas")
     st.bar_chart(top_estados)
 
-    top_productos = (
-        df.groupby("family")["sales"]
-        .sum()
-        .sort_values(ascending=False)
-        .head(5)
-    )
-
-    st.subheader("🏆 Familias de productos más rentables")
-    st.bar_chart(top_productos)
-
     df["promo"] = df["onpromotion"] > 0
 
     ventas_mes_promo = (
