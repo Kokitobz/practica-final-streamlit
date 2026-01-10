@@ -9,28 +9,15 @@ import os
 
 
 
+FILE_ID = "1I--5yCp9dw0iYpZuGMyMNM6pYnpQac-5"
+URL = f"https://drive.google.com/uc?id={FILE_ID}"
+OUTPUT = "ventas.csv"
+
+@st.cache_data
 def load_data():
-    FILE_ID_1 = "1I--5yCp9dw0iYpZuGMyMNM6pYnpQac-5"
-    FILE_ID_2 = "1z2zRcWSP3RnKLGijY0w6FNOXxiUZSthf"
-
-    url_1 = f"https://drive.google.com/uc?id={FILE_ID_1}"
-    url_2 = f"https://drive.google.com/uc?id={FILE_ID_2}"
-
-    file_1 = "ventas_2013_2015.csv"
-    file_2 = "ventas_2015_2018.csv"
-
-    if not os.path.exists(file_1):
-        gdown.download(url_1, file_1, quiet=False)
-
-    if not os.path.exists(file_2):
-        gdown.download(url_2, file_2, quiet=False)
-
-    df1 = pd.read_csv(file_1, parse_dates=["date"])
-    df2 = pd.read_csv(file_2, parse_dates=["date"])
-
-    # Concatenación vertical
-    df = pd.concat([df1, df2], ignore_index=True)
-
+    if not os.path.exists(OUTPUT):
+        gdown.download(URL, OUTPUT, quiet=False)
+    df = pd.read_csv(OUTPUT, parse_dates=["date"])
     return df
 
 df = load_data()
