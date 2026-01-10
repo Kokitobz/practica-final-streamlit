@@ -22,6 +22,23 @@ def load_data():
 
 df = load_data()
 
+st.info(
+    """
+    ℹ️ **Aviso sobre el conjunto de datos utilizado**
+
+    Para garantizar un correcto rendimiento y estabilidad de la aplicación en Streamlit Cloud,
+    el análisis se ha realizado utilizando **un único fichero CSV** del conjunto de datos disponible.
+
+    El uso simultáneo de ambos ficheros provoca problemas de memoria y tiempos de carga excesivos 
+    en el entorno de despliegue.
+
+    Los resultados mostrados son representativos del comportamiento general de las ventas, aunque
+    pueden diferir ligeramente de los valores exactos que se obtendrían utilizando el dataset completo.
+    """
+)
+
+
+
 st.title("📊 Visión Global de las Ventas")
 
 tab1, tab2, tab3, tab4 = st.tabs([
