@@ -37,10 +37,11 @@ df = load_data()
 
 st.title("📊 Visión Global de las Ventas")
 
-tab1, tab2, tab3 = st.tabs([
-    "📊 Resumen Global",
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📊 Visión Global",
     "🏬 Análisis por tienda",
-    "🗺️ Análisis por estado"
+    "🗺️ Análisis por estado",
+    "🚀 Insights para Dirección"
 ])
 
 
@@ -195,3 +196,50 @@ with tab3:
         producto_nombre,
         f"{int(producto_ventas):,}".replace(",", ".")
     )
+
+with tab4:
+    st.title("🚀 Insights estratégicos de ventas")
+    promo_effect = (
+        df.assign(promo=lambda x: x["onpromotion"] > 0)
+        .groupby("promo")["sales"]
+        .mean()
+    )
+
+    promo_effect.index = ["Sin promoción", "Con promoción"]
+
+    st.subheader("🎯 Impacto medio de las promociones")
+    st.bar_chart(promo_effect)
+
+    top_estados = (
+        df.groupby("state")["sales"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(5)
+    )
+
+    st.subheader("🗺️ Estados con mayor volumen de ventas")
+    st.bar_chart(top_estados)
+
+    top_productos = (
+        df.groupby("family")["sales"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(5)
+    )
+
+    st.subheader("🏆 Familias de productos más rentables")
+    st.bar_chart(top_productos)
+
+    df["promo"] = df["onpromotion"] > 0
+
+    ventas_mes_promo = (
+        df.groupby(["month", "promo"])["sales"]
+        .mean()
+        .unstack()
+    )
+
+    ventas_mes_promo.columns = ["Sin promoción", "Con promoción"]
+
+    st.subheader("📆 Estacionalidad de ventas y promociones")
+    st.line_chart(ventas_mes_promo)
+
