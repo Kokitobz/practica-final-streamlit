@@ -199,16 +199,20 @@ with tab3:
 
 with tab4:
     st.title("🚀 Insights estratégicos de ventas")
-    promo_effect = (
-        df.assign(promo=lambda x: x["onpromotion"] > 0)
+    ventas_promo = df.copy()
+    ventas_promo["promo"] = ventas_promo["onpromotion"] > 0
+
+    ventas_totales = (
+        ventas_promo
         .groupby("promo")["sales"]
-        .mean()
+        .sum()
     )
 
-    promo_effect.index = ["Sin promoción", "Con promoción"]
+    ventas_totales.index = ["Sin promoción", "Con promoción"]
 
-    st.subheader("🎯 Impacto medio de las promociones")
-    st.bar_chart(promo_effect)
+    st.subheader("💰 Peso de las promociones en las ventas totales")
+    st.bar_chart(ventas_totales)
+
 
     top_estados = (
         df.groupby("state")["sales"]
